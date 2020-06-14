@@ -1,0 +1,30 @@
+function doGet(){
+
+var cap_db = SpreadsheetApp.openById("1JSZYPQX59nLT6CMYGtwKG3fOusyw2NPYSmU9qf6roYQ");
+
+var ca_log = cap_db.getSheetByName("log");
+
+ var date_now = new Date();
+  var currentTime = date_now.toLocaleTimeString();
+  var current_user =Session.getActiveUser().getEmail();
+ var current_lang =Session.getActiveUserLocale();
+  var current_tzone = Session.getScriptTimeZone();
+
+ 
+  ca_log.appendRow([currentTime,current_user,current_lang,current_tzone]);
+
+  sendEmails(current_user,currentTime);
+  
+  return HtmlService.createHtmlOutputFromFile("index");
+  
+  
+}
+
+
+function sendEmails(mail_a,time_a) {
+
+    var emailAddress = mail_a; // First column
+    var message = "You visited the testing site at " + time_a ;
+    var subject = "User Tracking Email";
+    MailApp.sendEmail(emailAddress, subject, message);
+  }
